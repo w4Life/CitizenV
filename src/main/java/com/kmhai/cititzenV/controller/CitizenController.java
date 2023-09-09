@@ -51,14 +51,14 @@ public class CitizenController {
         return new ResponseEntity<>(citizenService.getByDistrict(code), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_A1", "ROLE_A2", "ROLE_A3, ROLE_B1"})
+    @Secured({"ROLE_A1", "ROLE_A2", "ROLE_A3", "ROLE_B1"})
     @PreAuthorize("@utilsServiceImpl.checkAccess(authentication, #code)")
     @GetMapping("/by-ward/{ward-code}")
     public ResponseEntity<?> getByWard(@PathVariable("ward-code") String code) {
         return new ResponseEntity<>(citizenService.getByWard(code), HttpStatus.OK);
     }
 
-    @Secured({"ROLE_A1", "ROLE_A2", "ROLE_A3, ROLE_B1, ROLE_B2"})
+    @Secured({"ROLE_A1", "ROLE_A2", "ROLE_A3", "ROLE_B1", "ROLE_B2"})
     @PreAuthorize("@utilsServiceImpl.checkAccess(authentication, #code)")
     @GetMapping("/by-hamlet/{hamlet-code}")
     public ResponseEntity<?> getByHamlet(@PathVariable("hamlet-code") String code) {
@@ -72,10 +72,10 @@ public class CitizenController {
     }
 
     @Secured({"ROLE_B2"})
-    @PreAuthorize("@utilsServiceImpl.checkAccess(authentication, #hamletCode)")
+    @PreAuthorize("@utilsServiceImpl.checkUserPermission(authentication, #hamletCode)")
     @DeleteMapping("/{hamlet-code}")
-    public ResponseEntity<?> deleteCitizen(@RequestBody DeleteRequest req, @PathVariable("hamlet-code") String hamletcode) {
-        var res = citizenService.deleteCitizen(hamletcode, req.getIdentityCode());
+    public ResponseEntity<?> deleteCitizen(@RequestBody DeleteRequest req, @PathVariable("hamlet-code") String hamletCode) {
+        var res = citizenService.deleteCitizen(hamletCode, req.getIdentityCode());
         if (res == "you don't have permission") return new ResponseEntity<>(res, HttpStatus.UNAUTHORIZED);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

@@ -79,15 +79,15 @@ public class UtilsServiceImpl implements UtilsService {
 
         if (citizenRepo.existsByIdentityCode(c.getIdentityCode())) res += "Invalid indentity Code\n";
         
-        if (c.getPermanentAddress().getHamletCode() != hamletCode) {
+        if (!c.getPermanentAddress().getHamletCode().equals(hamletCode)) {
             res += "invalid permanent address\n";
-        } else if (addressRepo.existsByLocationAdnHamlet(c.getPermanentAddress().getLocation(), c.getPermanentAddress().getHamletCode()) == 0) {
+        } else if (addressRepo.existsByLocationAndHamlet(c.getPermanentAddress().getLocation(), c.getPermanentAddress().getHamletCode()) == 0) {
             res += "invalid permanent address\n";                
         }
 
         if (!hamletRepo.existsByCode(c.getTemporaryAddress().getHamletCode())) {
             res += "invalid temporary address\n";
-        } else if (addressRepo.existsByLocationAdnHamlet(c.getTemporaryAddress().getLocation(), c.getPermanentAddress().getHamletCode()) == 0) {
+        } else if (addressRepo.existsByLocationAndHamlet(c.getTemporaryAddress().getLocation(), c.getPermanentAddress().getHamletCode()) == 0) {
             res += "invalid temporary address\n";
         }
 
